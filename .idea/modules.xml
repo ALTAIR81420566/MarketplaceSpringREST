@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/restGradle.iml" filepath="$PROJECT_DIR$/.idea/modules/restGradle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/restGradle_main.iml" filepath="$PROJECT_DIR$/.idea/modules/restGradle_main.iml" group="restGradle" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/restGradle_test.iml" filepath="$PROJECT_DIR$/.idea/modules/restGradle_test.iml" group="restGradle" />
+    </modules>
+  </component>
+</project>

@@ -17,7 +17,7 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -34,10 +34,10 @@
             <p>You are logged in as: </p>
         </div>
         <div class="col-2 col-md-1 ">
-            <p id="userLogin">${login}</p>
+            <p id="userLogin">${user.login}</p>
         </div>
         <div class="col-2 col-md-1 ">
-            <a id="LogOut"  onclick="window.location.href='/authorization';">LogOut</a>
+           <a id="LogOut"  onclick="window.location.href='/';">LogOut</a>
         </div>
     </div>
 </div>
@@ -50,7 +50,7 @@
     <div class="row justify-content-md-center">
 
         <div class="col-6 col-md-2 col-md-offset-10">
-                <button id = "backBtn">Back on general page</button>
+             <button id = "backBtn" onclick="window.location.href='/general'">Back on general page</button>
         </div>
     </div>
 
@@ -79,17 +79,17 @@
                             <td>${item.key.sellerID}</td>
                             <td>${item.key.startPrice}</td>
                             <c:choose>
-                                <c:when test="${!item.key.buyNow}">
+                                <c:when test="${item.key.buyNow == 0}">
                                     <td>${item.key.step}</td>
                                     <td>
                                         <jsp:useBean id="dateValue" class="java.util.Date"/>
                                         <jsp:setProperty name="dateValue" property="time"
-                                                         value="${item.key.stopDate}"/>
+                                                         value="${item.key.time + item.key.startBiddingDate}"/>
                                         <fmt:formatDate value="${dateValue}" pattern="dd/MM/yyyy HH:mm"/>
 
                                     </td>
                                 </c:when>
-                                <c:when test="${item.key.buyNow}">
+                                <c:when test="${item.key.buyNow == 1}">
                                     <td>-</td>
                                     <td>-</td>
                                 </c:when>
@@ -102,10 +102,10 @@
                                 <td> ${item.value.count}</td>
                                 <td> ${item.value.userId}</td>
                             </c:if>
-                            <c:if test="${item.key.sold}">
+                            <c:if test="${item.key.sold == 1}">
                                  <td>SOLD</td>
                             </c:if>
-                            <c:if test="${!item.key.sold}">
+                            <c:if test="${item.key.sold == 0}">
                                 <jsp:useBean id="now" class="java.util.Date"/>
                                 <c:if test="${dateValue.getTime() > now.getTime()}">
                                 <td>

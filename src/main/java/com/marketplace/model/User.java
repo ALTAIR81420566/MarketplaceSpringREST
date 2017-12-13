@@ -3,11 +3,11 @@ package com.marketplace.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "BIDS")
+@Table(name = "USERS")
 public class User {
 
     @Id
-    @Column(name = "BID_ID")
+    @Column(name = "USER_ID")
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "USERS_SEQ")
     @SequenceGenerator(name = "USERS_SEQ", sequenceName = "USERS_SEQ", allocationSize=1)
     private Long id;
@@ -24,13 +24,25 @@ public class User {
     @Column(name = "PASSWORD")
     private String password;
 
-    public User( String login,String password,String billingAddress, String name ) {
+    @Column(name = "ROLE")
+    private String role;
+
+
+    public User(String login, String password, String billingAddress, String name ) {
         this.name = name;
         this.billingAddress = billingAddress;
         this.login = login;
         this.password = password;
     }
+    public User(){}
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
     public Long getId() {
         return id;
     }

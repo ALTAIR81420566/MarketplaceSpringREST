@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +13,7 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -22,25 +23,34 @@
     <![endif]-->
 </head>
 <body>
+<div class ="container">
+    <div class="row col-md-offset-2">
+    <form:form method="POST" commandName="user" action="authorization" class="form-group">
+         <div class="form-group">
+                  <td>Login:</td>
+                  <td><form:input path="login"  class="form-control" /></td>
+         </div>
+         <div class="form-group">
+                  <td>Password:</td>
+                  <td><form:input path="password" class="form-control" /></td>
+                  <p class = "errorText">${error}</p>
+         </div>
+         <div class="col-2 col-md-1 ">
+            <button type="submit" class="btn btn-success" value="Save Changes" >Sign in</button>
+         </div>
+    </form:form>
 
-<div class="container">
-
-    <form role="form">
-        <div class="form-group">
-            <label for="login">Login</label>
-            <input class="form-control" id="login" placeholder="Enter login" >
+        <div class="col-2 col-md-2 ">
+             <form:form method="POST" commandName="user" action="/authorization/guest" class="form-group">
+                <button type="submit" class="btn btn btn-primary">Enter as guest</button>
+             </form:form>
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password">
-            <p class = "errorText"></p>
+        <div class="col-2 col-md-1 ">
+            <form:form method="GET" commandName="user" action="/registration" class="form-group">
+                <button type="submit" class="btn btn btn-primary">Register</button>
+            </form:form>
         </div>
-        <button type="submit" class="btn btn-success" id="signIn" >Sign in</button>
-        <button type="submit" class="btn btn btn-primary" id="entAsGuest">Enter as guest</button>
-        <button type="submit" class="btn btn btn-primary" id="onRegisterPage">Register</button>
-    </form>
-
-
+    <div>
 </div>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

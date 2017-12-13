@@ -12,7 +12,7 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
+   <link href="css/style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -49,7 +49,7 @@
         <div class="col-2 col-md-2 auhtorozationText">
             <p>Re-enter password: </p>
             <button type="submit" class="btn btn-success registerBtn" id="register" >Register</button>
-            <button type="submit" class="btn btn-primary registerBtn" id="back"  onclick="window.location.href='/authorization';">Back</button>
+            <button type="submit" class="btn btn-primary registerBtn" id="back"  onclick="window.location.href='/';">Back</button>
         </div>
         <div class="col-6 col-md-3">
             <p><input maxlength="25" size="35" id="rePassword" type="password"></p>

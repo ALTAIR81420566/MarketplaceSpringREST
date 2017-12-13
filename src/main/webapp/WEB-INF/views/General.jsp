@@ -19,8 +19,8 @@
     <title>General</title>
 
     <!-- Bootstrap -->
+    <link href="css/style.css" rel="stylesheet">
     <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -37,10 +37,10 @@
             <p>You are logged in as: </p>
         </div>
         <div class="col-2 col-md-1 ">
-            <p id="userLogin">${login}</p>
+            <p id="userLogin">${user.login}</p>
         </div>
         <div class="col-2 col-md-1 ">
-            <a id="LogOut"  onclick="window.location.href='/authorization';">LogOut</a>
+            <a id="LogOut"  onclick="window.location.href='/';">LogOut</a>
         </div>
     </div>
 </div>
@@ -69,14 +69,14 @@
                 </div>
             </form>
             <div class="col-6 col-md-3">
-                 <c:if test="${!role.equals('guest')}">
+                 <c:if test="${!user.role.equals('guest')}">
                           <div class="col-2 col-md-6 ">
                                <form method="get" action="/add">
                                    <button id="addBtn" type="submit" name="action" value="add">Add my product</button>
                                </form>
                           </div>
                           <div class="col-5 col-md-6 ">
-                                    <button id = "myProd">My products</button>
+                             <button type="submit"  onclick="window.location.href='/my_product'">My products</button>
                           </div>
                  </c:if>
             </div>
@@ -114,17 +114,17 @@
                             <td>${item.key.sellerID}</td>
                             <td>${item.key.startPrice}</td>
                             <c:choose>
-                                <c:when test="${!item.key.buyNow}">
+                                <c:when test="${item.key.buyNow == 0}">
                                     <td>${item.key.step}</td>
                                     <td>
                                         <jsp:useBean id="dateValue" class="java.util.Date"/>
                                         <jsp:setProperty name="dateValue" property="time"
-                                                         value="${item.key.stopDate}"/>
+                                                         value="${item.key.time + item.key.startBiddingDate}"/>
                                         <fmt:formatDate value="${dateValue}" pattern="dd/MM/yyyy HH:mm"/>
 
                                     </td>
                                 </c:when>
-                                <c:when test="${item.key.buyNow}">
+                                <c:when test="${item.key.buyNow == 1}">
                                     <td>-</td>
                                     <td>-</td>
                                 </c:when>
@@ -137,21 +137,21 @@
                                 <td> ${item.value.count}</td>
                                 <td> ${item.value.userId}</td>
                             </c:if>
-                            <c:if test="${item.key.sold}">
+                            <c:if test="${item.key.sold == 1}">
                                  <td>SOLD</td>
                             </c:if>
-                            <c:if test="${!item.key.sold}">
+                            <c:if test="${item.key.sold == 0}">
                             <jsp:useBean id="now" class="java.util.Date"/>
 
-                                    <c:if test="${!role.equals('guest')}">
-                                          <c:if test="${item.key.buyNow}">
+                                    <c:if test="${!user.role.equals('guest')}">
+                                          <c:if test="${item.key.buyNow == 1}">
                                           <form  method="post" action="/general">
                                              <input maxlength="10" type="hidden" name="productId" value="${item.key.uID}">
                                              <td><button id="buyNowBtn" type ="submit" name="buy" value="true">Buy now</button></td>
                                            </form>
                                           </c:if>
 
-                                          <c:if test="${!item.key.buyNow}">
+                                          <c:if test="${item.key.buyNow == 0}">
                                               <c:if test="${dateValue.getTime() > now.getTime()}">
                                                   <form  method="post" action="/general">
                                                         <td>

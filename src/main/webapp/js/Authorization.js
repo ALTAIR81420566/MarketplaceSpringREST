@@ -61,17 +61,6 @@ $(document).ready(function(){
         };
          $('#login').change(jVal.login);
          $('#password').change(jVal.password);
-         $('#signIn').on('click', function (e) {
-            e.preventDefault();
-            if(jVal.login() && jVal.password()){
-               $.post("/authorization", {login: $('#login').val(), password: $('#password').val()}, jVal.authorizationCallback, 'json' )
-            }
-         });
-        $('#entAsGuest').on('click', function (e) {
-            e.preventDefault();
-            $.post("/authorization", {role: 'guest'});
-            window.location.href='/general';
-        });
         $('#onRegisterPage').on('click', function (e) {
             e.preventDefault();
             window.location.href='/register';

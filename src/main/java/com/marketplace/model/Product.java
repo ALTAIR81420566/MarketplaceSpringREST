@@ -8,7 +8,7 @@ import java.util.Date;
 public class Product {
 
     @Id
-    @Column(name = "BID_ID")
+    @Column(name = "PRODUCT_ID")
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "PRODUCTS_SEQ")
     @SequenceGenerator(name = "PRODUCTS_SEQ", sequenceName = "PRODUCTS_SEQ", allocationSize=1)
     private Long uID;
@@ -40,11 +40,11 @@ public class Product {
     @Column(name = "IS_SOLD")
     private int sold;
 
-    public long getStopDate() {
-        return stopDate;
-    }
-
-    private long stopDate;
+//    public long getStopDate() {
+//        return stopDate;
+//    }
+//
+//    private long stopDate;
 
 
     public Product(String title,String description,
@@ -68,7 +68,7 @@ public class Product {
         this.uID = uID;
     }
 
-    public int isSold() {
+    public int getSold() {
         return sold;
     }
 
@@ -140,7 +140,7 @@ public class Product {
         this.step = step;
     }
 
-    public int isBuyNow() {
+    public int getBuyNow() {
         return buyNow;
     }
 
@@ -150,9 +150,9 @@ public class Product {
         }
     }
 
-    public void setTimeMillis(long aLong) {
-        time = aLong / 1000 /60 / 60;
-        this.stopDate = aLong + startBiddingDate;
-    }
+//    public void setTimeMillis(long aLong) {
+//        time = aLong / 1000 /60 / 60;
+//        this.stopDate = aLong + startBiddingDate;
+//    }
 
 }

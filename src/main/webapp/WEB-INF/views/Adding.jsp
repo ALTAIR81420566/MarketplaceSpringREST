@@ -51,7 +51,7 @@
     <div class="row justify-content-md-center addBtns">
         <div class="col-2 col-md-2">
             <button id="publishBtn" >Publish/Add</button>
-            <button>Reset</button>
+            <!-- <button>Reset</button> -->
         </div>
         <div class="col-2 col-md-2">
         <button onClick="location.href='/general'">Back</button>

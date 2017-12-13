@@ -72,7 +72,7 @@
                  <c:if test="${!user.role.equals('guest')}">
                           <div class="col-2 col-md-6 ">
                                <form method="get" action="/add">
-                                   <button id="addBtn" type="submit" name="action" value="add">Add my product</button>
+                                   <button id="addBtn" type="submit">Add my product</button>
                                </form>
                           </div>
                           <div class="col-5 col-md-6 ">

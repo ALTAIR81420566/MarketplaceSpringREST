@@ -145,19 +145,19 @@
 
                                     <c:if test="${!user.role.equals('guest')}">
                                           <c:if test="${item.key.buyNow == 1}">
-                                          <form  method="post" action="/general">
+                                          <form  method="post" action="/buy">
                                              <input maxlength="10" type="hidden" name="productId" value="${item.key.uID}">
-                                             <td><button id="buyNowBtn" type ="submit" name="buy" value="true">Buy now</button></td>
-                                           </form>
+                                             <td><button id="buyNowBtn" type ="submit">Buy now</button></td>
+                                          </form>
                                           </c:if>
 
                                           <c:if test="${item.key.buyNow == 0}">
                                               <c:if test="${dateValue.getTime() > now.getTime()}">
                                                   <form  method="post" action="/general">
                                                         <td>
-                                                        <input type="hidden" name="buy" value="false">
-                                                          <input maxlength="10" size="5" type="number" name="count" value="${fn:escapeXml(products.count)}">
-                                                          <button id="bidBtn" type ="submit" name="productId" value="${item.key.uID}">Bid</button>
+                                                            <input type="hidden" name="buy" value="false">
+                                                            <input maxlength="10" size="5" type="number" name="count" value="${fn:escapeXml(products.count)}">
+                                                            <button id="bidBtn" type ="submit" name="productId" value="${item.key.uID}">Bid</button>
                                                         </td>
                                                   </form>
                                               </c:if>

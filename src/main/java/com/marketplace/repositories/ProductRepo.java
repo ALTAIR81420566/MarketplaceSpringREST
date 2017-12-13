@@ -15,4 +15,6 @@ public interface ProductRepo extends CrudRepository<Product, Long> {
     @Query(value ="SELECT * FROM PRODUCTS INNER JOIN USERS on " +
             "PRODUCTS.SELLER_ID = USERS.USER_ID WHERE USERS.LOGIN = ?1 ", nativeQuery = true)
     Iterable<Product> findByLogin(String login);
+
+    Product findByuID(long productId);
 }

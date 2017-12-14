@@ -17,33 +17,46 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class AddingController {
 
     private final ProductRepo prodRepo;
+    private Long productId;
 
     public AddingController(ProductRepo prodRepo) {
         this.prodRepo = prodRepo;
     }
 
     @RequestMapping(value = "/add", method = GET)
-    private ModelAndView add() {
+    private ModelAndView add(@RequestParam(value = "productId", required = false) Long productId) {
+        this.productId = productId;
         return new ModelAndView("Adding");
     }
 
     @RequestMapping(value = "/add", method = POST)
-    private void addProduct(@ModelAttribute(value = "user") User user, @RequestParam("title") String title, @RequestParam("startPrice") double startPrice,
-                              @RequestParam("timeLeft") int timeLeft, @RequestParam("description") String description,
-                              @RequestParam("step") double step, @RequestParam("buyItNow") String buyItNow) {
-        Product product =  new Product();
+    private void addProduct(@ModelAttribute(value = "user") User user,
+                            @RequestParam("title") String title,
+                            @RequestParam("startPrice") double startPrice,
+                            @RequestParam("timeLeft") int timeLeft,
+                            @RequestParam("description") String description,
+                            @RequestParam("step") double step,
+                            @RequestParam("buyItNow") String buyItNow) {
+        Product product = new Product();
+        if (productId != null) {
+            product.setuID(productId);
+            Product dbProd = prodRepo.findByuID(productId);
+            product.setStartBiddingDate(dbProd.getStartBiddingDate());
+        } else {
+            product.setStartBiddingDate(new Date().getTime());
+        }
         product.setTitle(title);
         product.setStartPrice(startPrice);
         product.setTime(timeLeft * 60 * 60 * 1000);
         product.setDescription(description);
         product.setStep(step);
-        if(buyItNow.equals("true")) {
+        if (buyItNow.equals("true")) {
             product.setIsBuyNow(1);
-        }else{
+        } else {
             product.setIsBuyNow(0);
         }
-        product.setStartBiddingDate(new Date().getTime());
         product.setSellerID(user.getId());
         prodRepo.save(product);
     }
+
 }

@@ -1,10 +1,7 @@
 package com.marketplace.configurations;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -15,7 +12,6 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(value = "com.marketplace")
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
-
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -24,15 +20,6 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         resolver.setViewClass(JstlView.class);
         registry.viewResolver(resolver);
     }
-
-//    @Bean
-//    public ViewResolver internalResourceViewResolver() {
-//        InternalResourceViewResolver bean = new InternalResourceViewResolver();
-//        bean.setViewClass(JstlView.class);
-//        bean.setPrefix("/WEB-INF/views/");
-//        bean.setSuffix(".jsp");
-//        return bean;
-//    }
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {

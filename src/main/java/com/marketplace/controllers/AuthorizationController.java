@@ -2,7 +2,6 @@ package com.marketplace.controllers;
 
 import com.marketplace.model.User;
 import com.marketplace.repositories.UserRepo;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 

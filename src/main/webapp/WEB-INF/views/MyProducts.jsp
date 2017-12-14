@@ -54,7 +54,7 @@
         </div>
     </div>
 
-    <form method="post" action="/myProducts">
+    <form>
                 <div class="table-responsive">
                 <table class="table ">
                     <tr>
@@ -109,6 +109,7 @@
                                 <jsp:useBean id="now" class="java.util.Date"/>
                                 <c:if test="${dateValue.getTime() > now.getTime()}">
                                 <td>
+                                <form method="post" action="/delete">
                                  <div class="col-2 col-md-2 ">
                                     <button id="delBtn" type ="submit" name="productId" value="${item.key.uID}" class="btnDelAdd">Delete</button>
                                 </form>

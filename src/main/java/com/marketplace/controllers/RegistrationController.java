@@ -25,8 +25,10 @@ public class RegistrationController {
     }
 
     @RequestMapping(value = "/registration", method = POST)
-    private User registrationPost(@RequestParam("fullName") String name, @RequestParam("login") String login,
-                                  @RequestParam("password") String password, @RequestParam("address") String address, Model model) {
+    private User registrationPost(@RequestParam("fullName") String name,
+                                  @RequestParam("login") String login,
+                                  @RequestParam("password") String password,
+                                  @RequestParam("address") String address, Model model) {
         User user = new User();
         if (repo.findByLogin(login) == null) {
             user.setLogin(login);

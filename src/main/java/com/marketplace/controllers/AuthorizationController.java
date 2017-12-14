@@ -14,6 +14,11 @@ public class AuthorizationController {
     private final String GUEST = "guest";
 
     private String error = "";
+    private final String ERROR_ATT = "error";
+    private final String USER = "user";
+    private final String REDIR_GEN = "redirect:/general";
+    private final String REDIR = "redirect:/";
+    private final String AUTH_VIEW = "Authorization";
     private final UserRepo repo;
 
     public AuthorizationController(UserRepo repo) {
@@ -23,35 +28,35 @@ public class AuthorizationController {
     @RequestMapping(value = "/", method = GET)
     private ModelAndView showPage() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("user", new User());
-        modelAndView.addObject("error", error);
-        modelAndView.setViewName("Authorization");
+        modelAndView.addObject(USER, new User());
+        modelAndView.addObject(ERROR_ATT, error);
+        modelAndView.setViewName(AUTH_VIEW);
         return modelAndView;
     }
 
     @RequestMapping(value = "/authorization", method = POST)
-    private ModelAndView authorization(@ModelAttribute(value = "user") User user) {
+    private ModelAndView authorization(@ModelAttribute(value = USER) User user) {
         ModelAndView modelAndView = new ModelAndView();
         User respUser = repo.findByLogin(user.getLogin());
         if (respUser != null && respUser.getPassword().equals(user.getPassword())) {
-            modelAndView.addObject("user", respUser);
-            modelAndView.setViewName("redirect:/general");
+            modelAndView.addObject(USER, respUser);
+            modelAndView.setViewName(REDIR_GEN);
         } else {
             this.error = "error";
-            modelAndView.setViewName("redirect:/");
+            modelAndView.setViewName(REDIR);
         }
 
         return modelAndView;
     }
 
     @RequestMapping(value = "/authorization/guest", method = POST)
-    private ModelAndView authorizationGuest(@ModelAttribute(value = "user") User user) {
+    private ModelAndView authorizationGuest(@ModelAttribute(value = USER) User user) {
         ModelAndView modelAndView = new ModelAndView();
 
         user.setLogin(GUEST);
         user.setRole(GUEST);
-        modelAndView.addObject("user", user);
-        modelAndView.setViewName("redirect:/general");
+        modelAndView.addObject(USER, user);
+        modelAndView.setViewName(REDIR_GEN);
 
         return modelAndView;
     }

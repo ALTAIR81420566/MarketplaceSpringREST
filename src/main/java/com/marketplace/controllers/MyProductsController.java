@@ -19,6 +19,8 @@ public class MyProductsController {
 
     private final ProductRepo prodRepo;
     private final BidRepo bidRepo;
+    private final String MYPROD_VIEW = "MyProducts";
+    private final String REDIR_MYPROD = "redirect:/my_product";
 
     public MyProductsController(ProductRepo prodRepo, BidRepo bidRepo) {
         this.prodRepo = prodRepo;
@@ -34,13 +36,13 @@ public class MyProductsController {
             products.put(product,bid);
         });
 
-        return new ModelAndView("MyProducts","products", products);
+        return new ModelAndView(MYPROD_VIEW,"products", products);
     }
 
     @RequestMapping(value = "/delete", method = POST)
     private ModelAndView delete(@RequestParam("productId") long productId) {
         prodRepo.delete(productId);
-        return new ModelAndView("redirect:/my_product");
+        return new ModelAndView(REDIR_MYPROD);
     }
 
 }

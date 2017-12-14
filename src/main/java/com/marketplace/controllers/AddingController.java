@@ -18,18 +18,20 @@ public class AddingController {
 
     private final ProductRepo prodRepo;
     private Long productId;
+    private final String ADD_VIEW = "Adding";
+    private final String ADD_PATH = "/add";
 
     public AddingController(ProductRepo prodRepo) {
         this.prodRepo = prodRepo;
     }
 
-    @RequestMapping(value = "/add", method = GET)
+    @RequestMapping(value = ADD_PATH, method = GET)
     private ModelAndView add(@RequestParam(value = "productId", required = false) Long productId) {
         this.productId = productId;
-        return new ModelAndView("Adding");
+        return new ModelAndView(ADD_VIEW);
     }
 
-    @RequestMapping(value = "/add", method = POST)
+    @RequestMapping(value = ADD_PATH, method = POST)
     private void addProduct(@ModelAttribute(value = "user") User user,
                             @RequestParam("title") String title,
                             @RequestParam("startPrice") double startPrice,

@@ -19,14 +19,21 @@ public class GeneralPageController {
 
     private final ProductRepo prodRepo;
     private final BidRepo bidRepo;
+    private final String REDIR_GEN = "redirect:/general";
+    private final String TITLE_PARAM = "Title";
+    private final String DESCRIPTION_PARAM = "Description";
+    private final String UID_PARAM = "uId";
+    private final String USER = "user";
+    private final String GENERAL_VIEW = "General";
+    private final String GENERAL_PATH = "/general";
 
     public GeneralPageController(ProductRepo prodRepo, BidRepo bidRepo) {
         this.prodRepo = prodRepo;
         this.bidRepo = bidRepo;
     }
 
-    @RequestMapping(value = "/general", method = GET)
-    private ModelAndView general(@ModelAttribute("user") User user,
+    @RequestMapping(value = GENERAL_PATH, method = GET)
+    private ModelAndView general(@ModelAttribute(USER) User user,
                                  @RequestParam(value = "findBy", required = false) String searchBy,
                                  @RequestParam(value = "searchText", required = false) String text) {
         Iterable<Product> dBProducts = null;
@@ -34,18 +41,18 @@ public class GeneralPageController {
         if (searchBy == null) {
             dBProducts = prodRepo.findAll();
             products = makeProducts(dBProducts);
-        } else if (searchBy.equals("Title")) {
+        } else if (searchBy.equals(TITLE_PARAM)) {
             dBProducts = prodRepo.findByTitleContaining(text);
             products = makeProducts(dBProducts);
-        } else if (searchBy.equals("Description")) {
+        } else if (searchBy.equals(DESCRIPTION_PARAM)) {
             dBProducts = prodRepo.findByDescriptionContaining(text);
             products = makeProducts(dBProducts);
-        } else if (searchBy.equals("uId")) {
+        } else if (searchBy.equals(UID_PARAM)) {
             Product product = prodRepo.findByuID(Long.parseLong(text));
             Bid bid = bidRepo.getBestBid(product.getuID());
             products.put(product, bid);
         }
-        return new ModelAndView("General", "products", products);
+        return new ModelAndView(GENERAL_VIEW, "products", products);
     }
 
     private HashMap<Product, Bid> makeProducts(Iterable<Product> dBProducts) {
@@ -57,8 +64,8 @@ public class GeneralPageController {
         return products;
     }
 
-    @RequestMapping(value = "/general", method = POST)
-    private ModelAndView addBid(@ModelAttribute("user") User user,
+    @RequestMapping(value = GENERAL_PATH, method = POST)
+    private ModelAndView addBid(@ModelAttribute(USER) User user,
                                 @RequestParam("productId") long productId,
                                 @RequestParam("count") int count) {
         Product product = prodRepo.findByuID(productId);
@@ -72,7 +79,7 @@ public class GeneralPageController {
                 saveBid(user, productId, count);
             }
         }
-        return new ModelAndView("redirect:/general");
+        return new ModelAndView(REDIR_GEN);
     }
 
     private void saveBid(User user, long productId, int count) {
@@ -84,11 +91,11 @@ public class GeneralPageController {
     }
 
     @RequestMapping(value = "/buy", method = POST)
-    private ModelAndView buyBid(@ModelAttribute("user") User user, @RequestParam("productId") long productId) {
+    private ModelAndView buyBid(@ModelAttribute(USER) User user, @RequestParam("productId") long productId) {
         Product product = prodRepo.findByuID(productId);
         product.setSold(1);
         prodRepo.save(product);
-        return new ModelAndView("redirect:/general");
+        return new ModelAndView(REDIR_GEN);
     }
 
 }

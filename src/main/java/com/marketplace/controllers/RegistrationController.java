@@ -14,17 +14,19 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class RegistrationController {
 
     private final UserRepo repo;
+    private final String REG_VIEW = "Registration";
+    private final String REG_PATH = "/registration";
 
     public RegistrationController(UserRepo repo) {
         this.repo = repo;
     }
 
-    @RequestMapping(value = "/registration", method = GET)
+    @RequestMapping(value = REG_PATH, method = GET)
     private ModelAndView registrationGet() {
-        return new ModelAndView("Registration");
+        return new ModelAndView(REG_VIEW);
     }
 
-    @RequestMapping(value = "/registration", method = POST)
+    @RequestMapping(value = REG_PATH, method = POST)
     private User registrationPost(@RequestParam("fullName") String name,
                                   @RequestParam("login") String login,
                                   @RequestParam("password") String password,

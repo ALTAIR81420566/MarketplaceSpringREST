@@ -25,6 +25,9 @@ public class Product {
     @Column(name = "START_BIDDING_DATE")
     private Long startBiddingDate = new Date().getTime();
 
+    @Column(name = "END_DATE")
+    private Long endBiddingDate = new Date().getTime();
+
     @Column(name = "TIME")
     private Long time;
 
@@ -40,12 +43,6 @@ public class Product {
     @Column(name = "IS_SOLD")
     private int sold;
 
-//    public long getStopDate() {
-//        return stopDate;
-//    }
-//
-//    private long stopDate;
-
 
     public Product(String title,String description,
                    double startPrice,double step) {
@@ -60,6 +57,13 @@ public class Product {
     };
 
 
+    public Long getEndBiddingDate() {
+        return endBiddingDate;
+    }
+
+    public void setEndBiddingDate(Long endBiddingDate) {
+        this.endBiddingDate = endBiddingDate;
+    }
 
     public long getTimeMillis(){
         return  time * 60 * 60 * 1000;

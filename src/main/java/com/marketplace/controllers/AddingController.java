@@ -3,6 +3,7 @@ package com.marketplace.controllers;
 import com.marketplace.model.Product;
 import com.marketplace.model.User;
 import com.marketplace.repositories.ProductRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +16,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 @SessionAttributes("user")
 public class AddingController {
+
 
     private final ProductRepo prodRepo;
     private Long productId;
@@ -50,6 +52,7 @@ public class AddingController {
         product.setTitle(title);
         product.setStartPrice(startPrice);
         product.setTime(timeLeft * 60 * 60 * 1000);
+        product.setEndBiddingDate(product.getTime() + product.getStartBiddingDate());
         product.setDescription(description);
         product.setStep(step);
         if (buyItNow.equals("true")) {

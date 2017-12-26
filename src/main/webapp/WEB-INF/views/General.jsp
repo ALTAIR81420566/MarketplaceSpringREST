@@ -68,6 +68,10 @@
                      <button id = "searchBtn" type="submit">Search</button>
                 </div>
             </form>
+                <div class="col-2 col-md-1 ">
+                     <button id = "advancedSearchBtn" onclick="window.location.href='/advanced';">Advanced search</button>
+                </div>
+
             <div class="col-6 col-md-3">
                  <c:if test="${!user.role.equals('guest')}">
                           <div class="col-2 col-md-6 ">

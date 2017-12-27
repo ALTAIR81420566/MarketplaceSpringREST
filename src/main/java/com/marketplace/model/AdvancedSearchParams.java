@@ -1,14 +1,30 @@
 package com.marketplace.model;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+
 public class AdvancedSearchParams {
+    @Min(value = 1, message = "must be more than 1")
     private Long uId;
     private String title;
+
     private String description;
+
+    @Min(value = 1, message = "must be more than 1")
     private Integer minPrice;
+
+    @Min(value = 1, message = "must be more than 1")
     private Integer maxPrice;
+
     private Boolean buyNow;
+
+    @Pattern(regexp = "([0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2})||([ ])", message = "invalid format")
     private String startDate;
+
+    @Pattern(regexp = "([0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2})||([ ])", message = "invalid format")
     private String expireDate;
+
+    @Min(value = 1, message = "must be more than 1")
     private Integer bidCount;
 
     public Long getuId() {

@@ -4,9 +4,14 @@ import com.marketplace.model.*;
 import com.marketplace.repositories.BidRepo;
 import com.marketplace.repositories.ProductRepo;
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,6 +40,7 @@ public class GeneralPageController {
     private final String LESS_OPERATION = "<";
 
     private HashMap<Product, Bid> products;
+
     private static Logger log = Logger.getLogger(GeneralPageController.class.getName());
 
     public GeneralPageController(ProductRepo prodRepo, BidRepo bidRepo) {
@@ -122,21 +128,42 @@ public class GeneralPageController {
         return new ModelAndView(REDIR_GEN);
     }
 
-    @RequestMapping(value = "general/advanced", method = GET)
-    private ModelAndView postAdvancedSearch(@ModelAttribute("params") AdvancedSearchParams params) {
-        products = new HashMap<>();
-        Specifications<Product> specifications = makeSpecification(params);
-        List<Product> prodList = prodRepo.findAll(Specifications.where(specifications));
-
-        Integer findBid = null;
-        if (params.getBidCount() != null) {
-            findBid = params.getBidCount();
-        }
-        products = makeProducts(prodList, findBid);
-
-        return new ModelAndView(REDIR_GEN);
+    @RequestMapping(value = "/advanced", method = GET)
+    private ModelAndView getAdvancedSearch(HttpServletRequest request) {
+        AdvancedSearchParams searchParams = new AdvancedSearchParams();
+        return new ModelAndView("AdvancedSearch", "params", searchParams);
     }
 
+    @RequestMapping(value = "/advanced", method = POST)
+    private ModelAndView postAdvancedSearch(@Valid @ModelAttribute("params") AdvancedSearchParams params, BindingResult bindingResult,
+                                            HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView modelAndView = new ModelAndView();
+        ;
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("AdvancedSearch");
+            modelAndView.addObject("params", params);
+        } else {
+            modelAndView.setViewName(REDIR_GEN);
+            products = new HashMap<>();
+            Specifications<Product> specifications = makeSpecification(params);
+            List<Product> prodList = prodRepo.findAll(Specifications.where(specifications));
+
+            Integer findBid = null;
+            if (params.getBidCount() != null) {
+                findBid = params.getBidCount();
+            }
+            products = makeProducts(prodList, findBid);
+        }
+
+        addCookies(response);
+        return modelAndView;
+    }
+
+    private void addCookies(HttpServletResponse response) {
+        Cookie cookie = new Cookie("cookieName", "печенька");
+        cookie.setMaxAge(3600);
+        response.addCookie(cookie);
+    }
 
     private Specifications<Product> buildSpecification(Specifications<Product> specifications, ProductSpecification sp) {
         Specifications<Product> result = null;
@@ -154,11 +181,11 @@ public class GeneralPageController {
         Long startDateMillis = null;
         Long expireDateMillis = null;
         try {
-            if (!params.getStartDate().equals("")) {
+            if (params.getStartDate() != null && !params.getStartDate().equals("")) {
                 Date startDate = formatter.parse(params.getStartDate());
                 startDateMillis = startDate.getTime();
             }
-            if (!params.getExpireDate().equals("")) {
+            if (params.getExpireDate() != null && !params.getExpireDate().equals("")) {
                 Date expireDate = formatter.parse(params.getExpireDate());
                 expireDateMillis = expireDate.getTime();
             }
@@ -167,7 +194,7 @@ public class GeneralPageController {
         }
 
         Specifications<Product> specifications = null;
-        if (!params.getTitle().equals("")) {
+        if (params.getTitle() != null && !params.getTitle().equals("")) {
             ProductSpecification sp = new ProductSpecification(new SearchCriteria("title", EQUALS_OPERATION, params.getTitle()));
             specifications = buildSpecification(specifications, sp);
         }
@@ -179,7 +206,7 @@ public class GeneralPageController {
             ProductSpecification sp = new ProductSpecification(new SearchCriteria("startBiddingDate", GREATER_OPERATION, startDateMillis));
             specifications = buildSpecification(specifications, sp);
         }
-        if (!params.getDescription().equals("")) {
+        if (params.getDescription() != null && !params.getDescription().equals("")) {
             ProductSpecification sp = new ProductSpecification(new SearchCriteria("description", EQUALS_OPERATION, params.getDescription()));
             specifications = buildSpecification(specifications, sp);
         }
@@ -195,7 +222,7 @@ public class GeneralPageController {
             ProductSpecification sp = new ProductSpecification(new SearchCriteria("uID", EQUALS_OPERATION, params.getuId()));
             specifications = buildSpecification(specifications, sp);
         }
-        if (params.getBuyNow() == true) {
+        if (params.getBuyNow() != null && params.getBuyNow() == true) {
             ProductSpecification sp = new ProductSpecification(new SearchCriteria("buyNow", EQUALS_OPERATION, 1));
             specifications = buildSpecification(specifications, sp);
         }

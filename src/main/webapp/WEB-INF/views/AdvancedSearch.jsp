@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,23 +29,27 @@
 <body>
 <div class ="container">
     <div class="row col-md-offset-2">
-    <form:form method="GET" commandName="params" action="general/advanced" class="form-group">
+    <form:form method="POST" commandName="params" action="advanced" class="form-group">
          <div class="row">
              <div class="form-group col-xs-3">
                       <td>UID:</td>
                       <td><form:input path="uId"  class="form-control" /></td>
+                      <td ><form:errors path="uId" cssClass="errorText"/></td>
              </div>
          </div>
          <div class="row">
              <div class="form-group col-xs-3">
                       <td>Title:</td>
-                      <td><form:input path="title"  class="form-control" /></td>
+                      <td><form:input path="title"  class="form-control" value="${cookie.cookieName.value}"/></td>
+
              </div>
          </div>
          <div class="row">
              <div class="form-group col-xs-3">
                       <td>Description:</td>
-                      <td><form:input path="description"  class="form-control" /></td>
+                      <td><form:input path="description"  class="form-control"/></td>
+
+
              </div>
          </div>
          <div class="row">
@@ -63,6 +71,7 @@
              <div class="form-group col-xs-3">
                       <td>startDate:</td>
                       <td><form:input path="startDate" class="form-control" /></td>
+                       <td ><form:errors path="startDate" cssClass="errorText"/></td>
 
              </div>
          </div>
@@ -70,6 +79,7 @@
              <div class="form-group col-xs-3">
                       <td>expireDate:</td>
                       <td><form:input path="expireDate" class="form-control" /></td>
+                      <td ><form:errors path="expireDate" cssClass="errorText"/></td>
              </div>
          </div>
          <div class="row">
@@ -81,6 +91,7 @@
              <div class="form-group col-xs-3">
                       <td>bidCount:</td>
                       <td><form:input path="bidCount"  class="form-control" /></td>
+                      <td ><form:errors path="bidCount" cssClass="errorText"/></td>
              </div>
          </div>
          <div class="row">

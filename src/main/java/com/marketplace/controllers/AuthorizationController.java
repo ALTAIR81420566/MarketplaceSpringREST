@@ -37,16 +37,16 @@ public class AuthorizationController {
     @RequestMapping(value = "/authorization", method = POST)
     private ModelAndView authorization(@ModelAttribute(value = USER) User user) {
         ModelAndView modelAndView = new ModelAndView();
-        User respUser = repo.findByLogin(user.getLogin());
-        if (respUser != null && respUser.getPassword().equals(user.getPassword())) {
-            modelAndView.addObject(USER, respUser);
-            modelAndView.setViewName(REDIR_GEN);
-        } else {
-            this.error = "error";
-            modelAndView.setViewName(REDIR);
-        }
-
+        user.setRole("USER");
+        modelAndView.addObject(USER, user);
+        modelAndView.setViewName(REDIR_GEN);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/authError", method = POST)
+    private ModelAndView authError() {
+        this.error = ERROR_ATT;
+        return new ModelAndView("/");
     }
 
     @RequestMapping(value = "/authorization/guest", method = POST)

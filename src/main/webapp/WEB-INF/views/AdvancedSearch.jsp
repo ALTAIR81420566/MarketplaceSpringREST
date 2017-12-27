@@ -103,13 +103,12 @@
              <div class="col-2 col-md-1 ">
                 <button type="submit" class="btn btn-success" value="Save Changes" >Search</button>
              </div>
-             <div class="col-2 col-md-1 ">
-                <button class="btn btn-primary" value="Save Changes" onclick="window.location.href='/clear'">Clear Search</button>
-             </div>
+
          </div>
-
     </form:form>
-
+    <form:form method="GET"  action="clear" class="form-group">
+          <button type="submit" class="btn btn-primary" value="Save Changes">Clear Search</button>
+    </form:form>
     <div>
 </div>
 

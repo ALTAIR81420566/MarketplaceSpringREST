@@ -131,7 +131,10 @@ public class GeneralPageController {
     @RequestMapping(value = "/advanced", method = GET)
     private ModelAndView getAdvancedSearch(HttpServletRequest request) {
         AdvancedSearchParams searchParams = new AdvancedSearchParams();
-        return new ModelAndView("AdvancedSearch", "params", searchParams);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("AdvancedSearch");
+        modelAndView.addObject("params", searchParams);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/clear", method = GET)
@@ -139,13 +142,15 @@ public class GeneralPageController {
 
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
-            cookie.setMaxAge(0);
-            cookie.setValue(null);
-            cookie.setPath("/");
-            response.addCookie(cookie);
+            if(!cookie.getName().equals("JSESSIONID")) {
+                cookie.setMaxAge(0);
+                cookie.setValue(null);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
         }
 
-        return new ModelAndView("redirect: /advanced");
+        return new ModelAndView("redirect:/advanced");
     }
 
     @RequestMapping(value = "/advanced", method = POST)

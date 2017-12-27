@@ -1,32 +1,28 @@
 package com.marketplace.configurations;
 
-import com.marketplace.model.Product;
+import com.marketplace.interceptors.AuthorozationInterceptor;
+import com.marketplace.repositories.UserRepo;
 import org.apache.tomcat.util.http.LegacyCookieProcessor;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import java.util.Properties;
 
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(value = "com.marketplace")
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
+
+    private final UserRepo repo;
+
+    public MvcConfiguration(UserRepo repo) {
+        this.repo = repo;
+    }
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
@@ -52,6 +48,9 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         };
     }
 
-
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthorozationInterceptor(repo)).addPathPatterns("/general","/add");
+    }
 
 }

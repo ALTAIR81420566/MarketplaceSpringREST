@@ -30,14 +30,17 @@ public class GeneralPageController {
     private final BidRepo bidRepo;
     private final String REDIR_GEN = "redirect:/general";
     private final String TITLE_PARAM = "Title";
+    private final String PARAMS_PARAM = "params";
     private final String DESCRIPTION_PARAM = "Description";
     private final String UID_PARAM = "uId";
     private final String USER = "user";
     private final String GENERAL_VIEW = "General";
     private final String GENERAL_PATH = "/general";
+    private final String ADVANCED_SEARCH_VIEW = "/AdvancedSearch";
     private final String EQUALS_OPERATION = ":";
     private final String GREATER_OPERATION = ">";
     private final String LESS_OPERATION = "<";
+    private final String DATE_FORMAT = "dd/MM/yyyy HH:mm";
 
     private HashMap<Product, Bid> products;
 
@@ -132,8 +135,8 @@ public class GeneralPageController {
     private ModelAndView getAdvancedSearch(HttpServletRequest request) {
         AdvancedSearchParams searchParams = new AdvancedSearchParams();
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("AdvancedSearch");
-        modelAndView.addObject("params", searchParams);
+        modelAndView.setViewName(ADVANCED_SEARCH_VIEW);
+        modelAndView.addObject(PARAMS_PARAM, searchParams);
         return modelAndView;
     }
 
@@ -154,13 +157,13 @@ public class GeneralPageController {
     }
 
     @RequestMapping(value = "/advanced", method = POST)
-    private ModelAndView postAdvancedSearch(@Valid @ModelAttribute("params") AdvancedSearchParams params, BindingResult bindingResult,
+    private ModelAndView postAdvancedSearch(@Valid @ModelAttribute(PARAMS_PARAM) AdvancedSearchParams params, BindingResult bindingResult,
                                             HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
         ;
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("AdvancedSearch");
-            modelAndView.addObject("params", params);
+            modelAndView.setViewName(ADVANCED_SEARCH_VIEW);
+            modelAndView.addObject(PARAMS_PARAM, params);
         } else {
             modelAndView.setViewName(REDIR_GEN);
             products = new HashMap<>();
@@ -248,7 +251,7 @@ public class GeneralPageController {
 
     private Specifications<Product> makeSpecification(AdvancedSearchParams params) {
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         Long startDateMillis = null;
         Long expireDateMillis = null;
         try {

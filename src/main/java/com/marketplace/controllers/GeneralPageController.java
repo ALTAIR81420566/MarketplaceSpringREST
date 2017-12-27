@@ -134,6 +134,20 @@ public class GeneralPageController {
         return new ModelAndView("AdvancedSearch", "params", searchParams);
     }
 
+    @RequestMapping(value = "/clear", method = GET)
+    private ModelAndView clearSearch(HttpServletRequest request, HttpServletResponse response) {
+
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            cookie.setMaxAge(0);
+            cookie.setValue(null);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
+
+        return new ModelAndView("redirect: /advanced");
+    }
+
     @RequestMapping(value = "/advanced", method = POST)
     private ModelAndView postAdvancedSearch(@Valid @ModelAttribute("params") AdvancedSearchParams params, BindingResult bindingResult,
                                             HttpServletRequest request, HttpServletResponse response) {

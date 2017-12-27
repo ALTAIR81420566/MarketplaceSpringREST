@@ -33,21 +33,21 @@
          <div class="row">
              <div class="form-group col-xs-3">
                       <td>UID:</td>
-                      <td><form:input path="uId"  class="form-control" /></td>
+                      <td><form:input path="uId"  class="form-control" value="${cookie.uIdCookie.value}"/></td>
                       <td ><form:errors path="uId" cssClass="errorText"/></td>
              </div>
          </div>
          <div class="row">
              <div class="form-group col-xs-3">
                       <td>Title:</td>
-                      <td><form:input path="title"  class="form-control" value="${cookie.cookieName.value}"/></td>
+                      <td><form:input path="title"  class="form-control" value="${cookie.titleCookie.value}"/></td>
 
              </div>
          </div>
          <div class="row">
              <div class="form-group col-xs-3">
                       <td>Description:</td>
-                      <td><form:input path="description"  class="form-control"/></td>
+                      <td><form:input path="description"  class="form-control" value="${cookie.descriptionCookie.value}"/></td>
 
 
              </div>
@@ -55,22 +55,27 @@
          <div class="row">
              <div class="form-group col-xs-2">
                       <td>minPrice:</td>
-                      <td><form:input path="minPrice"  class="form-control" /></td>
+                      <td><form:input path="minPrice"  class="form-control" value="${cookie.minPriceCookie.value}"/></td>
              </div>
              <div class="form-group col-xs-2">
                       <td>maxPrice:</td>
-                      <td><form:input path="maxPrice"  class="form-control" /></td>
+                      <td><form:input path="maxPrice"  class="form-control" value="${cookie.maxPriceCookie.value}"/></td>
              </div>
          </div>
          <div class="row">
              <div class="form-group col-xs-3">
-                   <form:checkbox path="buyNow" value="buyNow"/> Show only buy it now items
+                    <c:if test="${cookie.buyNowCookie.value == true}">
+                          <form:checkbox path="buyNow" value="${cookie.buyNowCookie.value}"  checked="checked"/> Show only buy it now items
+                    </c:if>
+                    <c:if test="${cookie.buyNowCookie.value != true}">
+                          <form:checkbox path="buyNow" value="${cookie.buyNowCookie.value}" /> Show only buy it now items
+                    </c:if>
              </div>
          </div>
          <div class="row">
              <div class="form-group col-xs-3">
                       <td>startDate:</td>
-                      <td><form:input path="startDate" class="form-control" /></td>
+                      <td><form:input path="startDate" class="form-control" value="${cookie.startDateCookie.value}"/></td>
                        <td ><form:errors path="startDate" cssClass="errorText"/></td>
 
              </div>
@@ -78,7 +83,7 @@
          <div class="row">
              <div class="form-group col-xs-3">
                       <td>expireDate:</td>
-                      <td><form:input path="expireDate" class="form-control" /></td>
+                      <td><form:input path="expireDate" class="form-control" value="${cookie.expireDateCookie.value}"/></td>
                       <td ><form:errors path="expireDate" cssClass="errorText"/></td>
              </div>
          </div>
@@ -90,7 +95,7 @@
          <div class="row">
              <div class="form-group col-xs-3">
                       <td>bidCount:</td>
-                      <td><form:input path="bidCount"  class="form-control" /></td>
+                      <td><form:input path="bidCount"  class="form-control" value="${cookie.bidCookie.value}" /></td>
                       <td ><form:errors path="bidCount" cssClass="errorText"/></td>
              </div>
          </div>

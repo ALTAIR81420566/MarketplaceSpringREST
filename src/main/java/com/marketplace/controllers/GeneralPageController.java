@@ -155,14 +155,66 @@ public class GeneralPageController {
             products = makeProducts(prodList, findBid);
         }
 
-        addCookies(response);
+        addCookies(response, params);
         return modelAndView;
     }
 
-    private void addCookies(HttpServletResponse response) {
-        Cookie cookie = new Cookie("cookieName", "печенька");
-        cookie.setMaxAge(3600);
-        response.addCookie(cookie);
+    private void addCookies(HttpServletResponse response, AdvancedSearchParams params) {
+        if(params.getuId() != null) {
+            Cookie uId = new Cookie("uIdCookie", params.getuId().toString());
+            uId.setMaxAge(3600);
+            response.addCookie(uId);
+        }
+
+        if(params.getDescription() != null) {
+            Cookie description = new Cookie("descriptionCookie", params.getDescription());
+            description.setMaxAge(3600);
+            response.addCookie(description);
+        }
+
+        if(params.getTitle() != null) {
+            Cookie title = new Cookie("titleCookie", params.getTitle());
+            title.setMaxAge(3600);
+            response.addCookie(title);
+        }
+
+        if(params.getExpireDate() != null) {
+            Cookie expireDate = new Cookie("expireDateCookie", params.getExpireDate());
+            expireDate.setMaxAge(3600);
+            response.addCookie(expireDate);
+        }
+
+        if(params.getStartDate() != null) {
+            Cookie startDate = new Cookie("startDateCookie", params.getStartDate());
+            startDate.setMaxAge(3600);
+            response.addCookie(startDate);
+        }
+
+        if(params.getBidCount() != null) {
+            Cookie bid = new Cookie("bidCookie", params.getBidCount().toString());
+            bid.setMaxAge(3600);
+            response.addCookie(bid);
+        }
+
+        if(params.getBuyNow() != null) {
+            Cookie buyNow = new Cookie("buyNowCookie", params.getBuyNow().toString());
+            buyNow.setMaxAge(3600);
+            response.addCookie(buyNow);
+        }
+
+        if(params.getMaxPrice() != null) {
+            Cookie maxPrice = new Cookie("maxPriceCookie", params.getMaxPrice().toString());
+            maxPrice.setMaxAge(3600);
+            response.addCookie(maxPrice);
+        }
+
+        if(params.getMinPrice() != null) {
+            Cookie minPrice = new Cookie("minPriceCookie", params.getMinPrice().toString());
+            minPrice.setMaxAge(3600);
+            response.addCookie(minPrice);
+        }
+
+
     }
 
     private Specifications<Product> buildSpecification(Specifications<Product> specifications, ProductSpecification sp) {

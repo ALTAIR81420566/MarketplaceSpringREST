@@ -1,8 +1,11 @@
 package com.marketplace.configurations;
 
 import com.marketplace.model.Product;
+import org.apache.tomcat.util.http.LegacyCookieProcessor;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +42,15 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
+    @Bean
+    public EmbeddedServletContainerCustomizer customizer() {
+        return container -> {
+            if (container instanceof TomcatEmbeddedServletContainerFactory) {
+                TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
+                tomcat.addContextCustomizers(context -> context.setCookieProcessor(new LegacyCookieProcessor()));
+            }
+        };
+    }
 
 
 

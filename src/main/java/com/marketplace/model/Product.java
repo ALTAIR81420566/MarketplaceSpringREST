@@ -154,10 +154,4 @@ public class Product {
             this.buyNow = isBuyNow;
         }
     }
-
-//    public void setTimeMillis(long aLong) {
-//        time = aLong / 1000 /60 / 60;
-//        this.stopDate = aLong + startBiddingDate;
-//    }
-
 }

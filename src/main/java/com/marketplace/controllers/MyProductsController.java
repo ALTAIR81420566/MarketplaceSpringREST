@@ -19,8 +19,8 @@ public class MyProductsController {
 
     private final ProductRepo prodRepo;
     private final BidRepo bidRepo;
-    private final String MYPROD_VIEW = "MyProducts";
-    private final String REDIR_MYPROD = "redirect:/my_product";
+    private static final String MYPROD_VIEW = "MyProducts";
+    private static final String REDIR_MYPROD = "redirect:/my_product";
 
     public MyProductsController(ProductRepo prodRepo, BidRepo bidRepo) {
         this.prodRepo = prodRepo;

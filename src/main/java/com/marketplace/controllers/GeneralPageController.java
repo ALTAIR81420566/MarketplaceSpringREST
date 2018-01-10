@@ -12,6 +12,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,19 +30,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class GeneralPageController {
     private final ProductRepo prodRepo;
     private final BidRepo bidRepo;
-    private final String REDIR_GEN = "redirect:/general";
-    private final String TITLE_PARAM = "Title";
-    private final String PARAMS_PARAM = "params";
-    private final String DESCRIPTION_PARAM = "Description";
-    private final String UID_PARAM = "uId";
-    private final String USER = "user";
-    private final String GENERAL_VIEW = "General";
-    private final String GENERAL_PATH = "/general";
-    private final String ADVANCED_SEARCH_VIEW = "/AdvancedSearch";
-    private final String EQUALS_OPERATION = ":";
-    private final String GREATER_OPERATION = ">";
-    private final String LESS_OPERATION = "<";
-    private final String DATE_FORMAT = "dd/MM/yyyy HH:mm";
+    private static final String REDIR_GEN = "redirect:/general";
+    private static final String TITLE_PARAM = "Title";
+    private static final String PARAMS_PARAM = "params";
+    private static final String DESCRIPTION_PARAM = "Description";
+    private static final String UID_PARAM = "uId";
+    private static final String USER = "user";
+    private static final String GENERAL_VIEW = "General";
+    private static final String GENERAL_PATH = "/general";
+    private static final String ADVANCED_SEARCH_VIEW = "/AdvancedSearch";
+    private static final String EQUALS_OPERATION = ":";
+    private static final String GREATER_OPERATION = ">";
+    private static final String LESS_OPERATION = "<";
+    private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm";
+    private static final int COOCKIES_MAX_AGE = 3600;
 
     private HashMap<Product, Bid> products;
 
@@ -57,22 +60,27 @@ public class GeneralPageController {
                                  @RequestParam(value = "searchText", required = false) String text) {
         HashMap<Product, Bid> result = null;
         if (products == null) {
-            result = new HashMap<>();
             Iterable<Product> dBProducts = null;
             result = new HashMap<Product, Bid>();
             if (searchBy == null) {
                 dBProducts = prodRepo.findAll();
                 result = makeProducts(dBProducts, null);
-            } else if (searchBy.equals(TITLE_PARAM)) {
-                dBProducts = prodRepo.findByTitleContaining(text);
-                result = makeProducts(dBProducts, null);
-            } else if (searchBy.equals(DESCRIPTION_PARAM)) {
-                dBProducts = prodRepo.findByDescriptionContaining(text);
-                result = makeProducts(dBProducts, null);
-            } else if (searchBy.equals(UID_PARAM)) {
-                Product product = prodRepo.findByuID(Long.parseLong(text));
-                Bid bid = bidRepo.getBestBid(product.getuID());
-                result.put(product, bid);
+            } else {
+                switch (searchBy) {
+                    case TITLE_PARAM:
+                        dBProducts = prodRepo.findByTitleContaining(text);
+                        result = makeProducts(dBProducts, null);
+                        break;
+                    case DESCRIPTION_PARAM:
+                        dBProducts = prodRepo.findByDescriptionContaining(text);
+                        result = makeProducts(dBProducts, null);
+                        break;
+                    case UID_PARAM:
+                        Product product = prodRepo.findByuID(Long.parseLong(text));
+                        Bid bid = bidRepo.getBestBid(product.getuID());
+                        result.put(product, bid);
+                        break;
+                }
             }
         } else {
             result = products;
@@ -83,18 +91,18 @@ public class GeneralPageController {
     }
 
     private HashMap<Product, Bid> makeProducts(Iterable<Product> dBProducts, Integer findBid) {
-        HashMap<Product, Bid> products = new HashMap<>();
+        HashMap<Product, Bid> result = new HashMap<>();
         dBProducts.forEach(product -> {
             Bid bid = bidRepo.getBestBid(product.getuID());
             if (findBid != null) {
                 if (bid != null && bid.getCount() == findBid) {
-                    products.put(product, bid);
+                    result.put(product, bid);
                 }
             } else {
-                products.put(product, bid);
+                result.put(product, bid);
             }
         });
-        return products;
+        return result;
     }
 
     @RequestMapping(value = GENERAL_PATH, method = POST)
@@ -145,7 +153,7 @@ public class GeneralPageController {
 
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
-            if(!cookie.getName().equals("JSESSIONID")) {
+            if (!cookie.getName().equals("JSESSIONID")) {
                 cookie.setMaxAge(0);
                 cookie.setValue(null);
                 cookie.setPath("/");
@@ -177,62 +185,66 @@ public class GeneralPageController {
             products = makeProducts(prodList, findBid);
         }
 
-        addCookies(response, params);
+        try {
+            addCookies(response, params);
+        } catch (UnsupportedEncodingException e) {
+            log.log(Level.SEVERE, "Encode error", e);
+        }
         return modelAndView;
     }
 
-    private void addCookies(HttpServletResponse response, AdvancedSearchParams params) {
-        if(params.getuId() != null) {
+    private void addCookies(HttpServletResponse response, AdvancedSearchParams params) throws UnsupportedEncodingException {
+        if (params.getuId() != null) {
             Cookie uId = new Cookie("uIdCookie", params.getuId().toString());
-            uId.setMaxAge(3600);
+            uId.setMaxAge(COOCKIES_MAX_AGE);
             response.addCookie(uId);
         }
 
-        if(params.getDescription() != null) {
-            Cookie description = new Cookie("descriptionCookie", params.getDescription());
-            description.setMaxAge(3600);
+        if (params.getDescription() != null) {
+            Cookie description = new Cookie("descriptionCookie",  URLEncoder.encode(params.getDescription(), "UTF-8"));
+            description.setMaxAge(COOCKIES_MAX_AGE);
             response.addCookie(description);
         }
 
-        if(params.getTitle() != null) {
-            Cookie title = new Cookie("titleCookie", params.getTitle());
-            title.setMaxAge(3600);
+        if (params.getTitle() != null) {
+            Cookie title = new Cookie("titleCookie",  URLEncoder.encode(params.getTitle(), "UTF-8"));
+            title.setMaxAge(COOCKIES_MAX_AGE);
             response.addCookie(title);
         }
 
-        if(params.getExpireDate() != null) {
+        if (params.getExpireDate() != null) {
             Cookie expireDate = new Cookie("expireDateCookie", params.getExpireDate());
-            expireDate.setMaxAge(3600);
+            expireDate.setMaxAge(COOCKIES_MAX_AGE);
             response.addCookie(expireDate);
         }
 
-        if(params.getStartDate() != null) {
+        if (params.getStartDate() != null) {
             Cookie startDate = new Cookie("startDateCookie", params.getStartDate());
-            startDate.setMaxAge(3600);
+            startDate.setMaxAge(COOCKIES_MAX_AGE);
             response.addCookie(startDate);
         }
 
-        if(params.getBidCount() != null) {
+        if (params.getBidCount() != null) {
             Cookie bid = new Cookie("bidCookie", params.getBidCount().toString());
-            bid.setMaxAge(3600);
+            bid.setMaxAge(COOCKIES_MAX_AGE);
             response.addCookie(bid);
         }
 
-        if(params.getBuyNow() != null) {
+        if (params.getBuyNow() != null) {
             Cookie buyNow = new Cookie("buyNowCookie", params.getBuyNow().toString());
-            buyNow.setMaxAge(3600);
+            buyNow.setMaxAge(COOCKIES_MAX_AGE);
             response.addCookie(buyNow);
         }
 
-        if(params.getMaxPrice() != null) {
+        if (params.getMaxPrice() != null) {
             Cookie maxPrice = new Cookie("maxPriceCookie", params.getMaxPrice().toString());
-            maxPrice.setMaxAge(3600);
+            maxPrice.setMaxAge(COOCKIES_MAX_AGE);
             response.addCookie(maxPrice);
         }
 
-        if(params.getMinPrice() != null) {
+        if (params.getMinPrice() != null) {
             Cookie minPrice = new Cookie("minPriceCookie", params.getMinPrice().toString());
-            minPrice.setMaxAge(3600);
+            minPrice.setMaxAge(COOCKIES_MAX_AGE);
             response.addCookie(minPrice);
         }
 

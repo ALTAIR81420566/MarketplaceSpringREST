@@ -3,8 +3,6 @@ package com.marketplace.controllers;
 import com.marketplace.model.Product;
 import com.marketplace.model.User;
 import com.marketplace.repositories.ProductRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,8 +18,8 @@ public class AddingController {
 
     private final ProductRepo prodRepo;
     private Long productId;
-    private final String ADD_VIEW = "Adding";
-    private final String ADD_PATH = "/add";
+    private static final String ADD_VIEW = "Adding";
+    private static final String ADD_PATH = "/add";
 
     public AddingController(ProductRepo prodRepo) {
         this.prodRepo = prodRepo;

@@ -50,7 +50,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthorozationInterceptor(repo)).addPathPatterns("/general","/add");
+        registry.addInterceptor(new AuthorozationInterceptor(repo)).addPathPatterns("/general", "/add");
     }
 
 }

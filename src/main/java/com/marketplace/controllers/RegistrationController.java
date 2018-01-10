@@ -14,8 +14,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class RegistrationController {
 
     private final UserRepo repo;
-    private final String REG_VIEW = "Registration";
-    private final String REG_PATH = "/registration";
+    private static final String REG_VIEW = "Registration";
+    private static final String REG_PATH = "/registration";
 
     public RegistrationController(UserRepo repo) {
         this.repo = repo;

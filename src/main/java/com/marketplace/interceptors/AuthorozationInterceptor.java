@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class AuthorozationInterceptor extends HandlerInterceptorAdapter {
-    private final String USER_ATTR = "user";
-    private final String USER_ROLE = "USER";
-    private final String AUTH_ERROR_REDIR = "/authError";
-    private final String AUTH_REDIR = "/";
+    private static final String USER_ATTR = "user";
+    private static final String USER_ROLE = "USER";
+    private static final String AUTH_ERROR_REDIR = "/authError";
+    private static final String AUTH_REDIR = "/";
     private final UserRepo repo;
 
     public AuthorozationInterceptor(UserRepo repo) {

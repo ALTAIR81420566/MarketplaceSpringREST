@@ -1,7 +1,6 @@
 package com.marketplace.controllers;
 
 import com.marketplace.model.User;
-import com.marketplace.repositories.UserRepo;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,13 +16,7 @@ public class AuthorizationController {
     private final String ERROR_ATT = "error";
     private final String USER = "user";
     private final String REDIR_GEN = "redirect:/general";
-    private final String REDIR = "redirect:/";
     private final String AUTH_VIEW = "Authorization";
-    private final UserRepo repo;
-
-    public AuthorizationController(UserRepo repo) {
-        this.repo = repo;
-    }
 
     @RequestMapping(value = "/", method = GET)
     private ModelAndView showPage() {

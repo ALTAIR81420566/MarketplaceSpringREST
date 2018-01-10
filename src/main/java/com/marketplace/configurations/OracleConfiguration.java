@@ -17,7 +17,7 @@ public class OracleConfiguration {
     private static final String HOST = "localhost";
     private static final String PORT = "1521";
     private static final String SID = "XE";
-    private static final String URL = String.format("jdbc:oracle:thin:@%s:%s:%s", HOST,PORT,SID);
+    private static final String URL = String.format("jdbc:oracle:thin:@%s:%s:%s", HOST, PORT, SID);
 
     @Bean
     DataSource dataSource() throws SQLException {
@@ -27,9 +27,8 @@ public class OracleConfiguration {
         dataSource.setURL(URL);
         dataSource.setImplicitCachingEnabled(true);
         dataSource.setFastConnectionFailoverEnabled(true);
-        return  dataSource;
+        return dataSource;
     }
-
 
 
 }
